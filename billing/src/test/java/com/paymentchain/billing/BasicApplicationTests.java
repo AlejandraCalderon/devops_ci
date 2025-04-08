@@ -1,16 +1,20 @@
 package com.paymentchain.billing;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.postgresql.translation.messages_bg;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@ExtendWith(MockitoExtension.class)
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class BasicApplicationTests  {
 
     @Test
-    void contextLoads() {
-       String message = "Default Message Cambio 11";
+    public void contextLoads() {
+       String message = "Default Message Cambio test devops";
         assertNotNull(message);
     }
 }
