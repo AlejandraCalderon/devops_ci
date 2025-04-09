@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.paymentchain.billing.controller;
 
 import com.paymentchain.billing.common.InvoiceRequestMapper;
@@ -30,7 +25,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import java.util.Optional;
 import java.util.function.Supplier;
 import org.springframework.data.domain.PageRequest;
@@ -56,12 +50,13 @@ public class InvoiceRestController {
 
     @Operation(description = "Return all invoices bundled into Response", summary = "Return 204 if no data found")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Exito"),
-        @ApiResponse(responseCode = "500", description = "Internal error")})
+            @ApiResponse(responseCode = "200", description = "Exito"),
+            @ApiResponse(responseCode = "500", description = "Internal error") })
     @GetMapping()
     public List<InvoiceResponse> list() throws BusinessRuleException {
         List<Invoice> findAll = billingRepository.findAll();
-        Supplier<BusinessRuleException> exceptionSupplier = () -> new BusinessRuleException("NO_FOUND", "The are no elements", HttpStatus.NOT_FOUND);
+        Supplier<BusinessRuleException> exceptionSupplier = () -> new BusinessRuleException("NO_FOUND",
+                "The are no elements", HttpStatus.NOT_FOUND);
         return Optional.ofNullable(findAll)
                 .filter(list -> !list.isEmpty())
                 .map(irspm::InvoiceListToInvoiceResposeList)
@@ -76,8 +71,9 @@ public class InvoiceRestController {
     }
 
     @GetMapping("/pageable")
-    public Page<InvoiceResponse> getAllPaged(@RequestParam("page") int page, @RequestParam("size") int size) throws BusinessRuleException {
-         Pageable pageable = PageRequest.of(page, size);
+    public Page<InvoiceResponse> getAllPaged(@RequestParam("page") int page, @RequestParam("size") int size)
+            throws BusinessRuleException {
+        Pageable pageable = PageRequest.of(page, size);
         Page<Invoice> findAll = billingRepository.findAll(pageable);
         if (findAll.isEmpty()) {
             throw new BusinessRuleException("NO_FOUND", "There are no elements", HttpStatus.NOT_FOUND);
@@ -86,7 +82,8 @@ public class InvoiceRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody InvoiceRequest input) throws BusinessRuleException {
+    public ResponseEntity<?> put(@PathVariable String id, @RequestBody InvoiceRequest input)
+            throws BusinessRuleException {
         Optional<Invoice> dtoOptional = billingRepository.findById(Long.valueOf(id));
         if (dtoOptional.isPresent()) {
             Invoice dtoTransformed = irm.InvoiceRequestToInvoice(input);
